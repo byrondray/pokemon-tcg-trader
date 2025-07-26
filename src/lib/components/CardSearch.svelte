@@ -1,6 +1,7 @@
 <!-- src/lib/components/CardSearch.svelte -->
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import { Input, Button, Badge, Card, CardContent } from '$lib/components/ui';
   
   const dispatch = createEventDispatcher();
   
@@ -39,153 +40,55 @@
   }
 </script>
 
-<div class="card-search">
-  <div class="search-form">
-    <input
-      type="text"
+<div class="w-full space-y-4">
+  <div class="flex gap-4">
+    <Input
       bind:value={searchQuery}
       placeholder="Search for Pokemon cards..."
-      class="search-input"
-      on:keydown={(e) => e.key === 'Enter' && performSearch()}
+      class="flex-1"
+      on:keydown={(e) => e.detail?.key === 'Enter' && performSearch()}
     />
     
-    <select bind:value={selectedSet} class="set-select">
+    <select 
+      bind:value={selectedSet} 
+      class="px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-1 focus:ring-ring"
+    >
       <option value="">All Sets</option>
       <!-- Add set options dynamically -->
     </select>
     
-    <button 
+    <Button 
       on:click={performSearch}
       disabled={isLoading || !searchQuery.trim()}
-      class="search-button"
     >
       {isLoading ? 'Searching...' : 'Search'}
-    </button>
+    </Button>
   </div>
   
   {#if searchResults.length > 0}
-    <div class="search-results">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
       {#each searchResults as card}
-        <div class="card-result" on:click={() => selectCard(card)} on:keydown>
-          {#if card.image}
-            <img src={card.image} alt={card.name} class="card-image" />
-          {/if}
-          <div class="card-info">
-            <h4>{card.name}</h4>
-            <p>{card.set?.name || 'Unknown Set'}</p>
-            {#if card.types}
-              <div class="card-types">
-                {#each card.types as type}
-                  <span class="type-badge">{type}</span>
-                {/each}
-              </div>
+        <Card class="cursor-pointer hover:shadow-md transition-shadow" on:click={() => selectCard(card)} on:keydown>
+          <CardContent class="flex gap-4 p-4">
+            {#if card.image}
+              <img src={card.image} alt={card.name} class="w-15 h-21 object-cover rounded" />
             {/if}
-          </div>
-        </div>
+            <div class="flex-1 space-y-2">
+              <h4 class="font-semibold text-lg">{card.name}</h4>
+              <p class="text-muted-foreground text-sm">{card.set?.name || 'Unknown Set'}</p>
+              {#if card.types}
+                <div class="flex gap-1 flex-wrap">
+                  {#each card.types as type}
+                    <Badge variant="secondary" class="text-xs">{type}</Badge>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+          </CardContent>
+        </Card>
       {/each}
     </div>
   {/if}
 </div>
 
-<style>
-  .card-search {
-    width: 100%;
-  }
-  
-  .search-form {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .search-input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-  }
-  
-  .set-select {
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    background: white;
-  }
-  
-  .search-button {
-    padding: 0.75rem 1.5rem;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  .search-button:disabled {
-    background: #9ca3af;
-    cursor: not-allowed;
-  }
-  
-  .search-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-    max-height: 400px;
-    overflow-y: auto;
-  }
-  
-  .card-result {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .card-result:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-  }
-  
-  .card-image {
-    width: 60px;
-    height: 84px;
-    object-fit: cover;
-    border-radius: 0.25rem;
-  }
-  
-  .card-info {
-    flex: 1;
-  }
-  
-  .card-info h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-  
-  .card-info p {
-    margin: 0 0 0.5rem 0;
-    color: #6b7280;
-    font-size: 0.9rem;
-  }
-  
-  .card-types {
-    display: flex;
-    gap: 0.25rem;
-    flex-wrap: wrap;
-  }
-  
-  .type-badge {
-    padding: 0.125rem 0.5rem;
-    background: #f3f4f6;
-    color: #374151;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-</style>
+<!-- Converted to use shadcn/ui components -->

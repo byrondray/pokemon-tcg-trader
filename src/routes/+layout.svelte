@@ -4,8 +4,6 @@
 	import { initializeSocket } from '$lib/stores/socket';
 	import '../app.css';
 
-	let { children } = $props();
-
 	onMount(async () => {
 		// Check authentication status and initialize user
 		try {
@@ -26,186 +24,62 @@
 	});
 </script>
 
-<div class="app">
-	<header class="header">
-		<nav class="nav">
-			<div class="nav-brand">
-				<a href="/" class="brand-link">
+<div class="flex flex-col min-h-screen bg-slate-50">
+	<header class="bg-white border-b border-slate-200 shadow-sm">
+		<nav class="flex items-center justify-between max-w-6xl mx-auto px-6 py-4">
+			<div class="flex items-center">
+				<a href="/" class="text-2xl font-bold text-primary-500 hover:text-primary-600 transition-colors">
 					🎴 Pokemon TCG Trader
 				</a>
 			</div>
 			
-			<div class="nav-links">
+			<div class="hidden md:flex items-center space-x-8">
 				<a href="/listings" class="nav-link">Browse Trades</a>
 				<a href="/wonder-picks" class="nav-link">Wonder Picks</a>
 				<a href="/messages" class="nav-link">Messages</a>
 			</div>
 			
-			<div class="nav-auth">
+			<div class="flex items-center space-x-4">
 				{#if $isAuthenticated}
-					<div class="user-menu">
-						<span class="username">Welcome, {$currentUser?.username}!</span>
+					<div class="flex items-center space-x-4">
+						<span class="text-slate-700 font-medium">Welcome, {$currentUser?.username}!</span>
 						<a href="/profile" class="nav-link">Profile</a>
 						<a href="/api/auth/logout" class="nav-link">Logout</a>
 					</div>
 				{:else}
-					<a href="/api/auth/login" class="auth-button">Login</a>
+					<a href="/api/auth/login" class="btn-primary">Login</a>
 				{/if}
 			</div>
 		</nav>
+
+		<!-- Mobile menu -->
+		<div class="md:hidden border-t border-slate-200 px-6 py-4">
+			<div class="flex flex-col space-y-3">
+				<a href="/listings" class="nav-link">Browse Trades</a>
+				<a href="/wonder-picks" class="nav-link">Wonder Picks</a>
+				<a href="/messages" class="nav-link">Messages</a>
+			</div>
+		</div>
 	</header>
 
-	<main>
-		{@render children()}
+	<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-8">
+		<slot />
 	</main>
 
-	<footer class="footer">
-		<div class="footer-content">
-			<p>&copy; 2025 Pokemon TCG Trader. Made for the Pokemon TCG Pocket community.</p>
-			<div class="footer-links">
-				<a href="/about">About</a>
-				<a href="/privacy">Privacy</a>
-				<a href="/terms">Terms</a>
+	<footer class="bg-slate-800 text-slate-300 py-8 mt-auto">
+		<div class="max-w-6xl mx-auto px-6">
+			<div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+				<p class="text-center md:text-left">
+					&copy; 2025 Pokemon TCG Trader. Made for the Pokemon TCG Pocket community.
+				</p>
+				<div class="flex space-x-6">
+					<a href="/about" class="text-slate-400 hover:text-slate-200 transition-colors">About</a>
+					<a href="/privacy" class="text-slate-400 hover:text-slate-200 transition-colors">Privacy</a>
+					<a href="/terms" class="text-slate-400 hover:text-slate-200 transition-colors">Terms</a>
+				</div>
 			</div>
 		</div>
 	</footer>
 </div>
 
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-		background: #f8fafc;
-	}
 
-	.header {
-		background: white;
-		border-bottom: 1px solid #e2e8f0;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	}
-
-	.nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 1rem 2rem;
-	}
-
-	.brand-link {
-		font-size: 1.5rem;
-		font-weight: bold;
-		color: #3b82f6;
-		text-decoration: none;
-	}
-
-	.nav-links {
-		display: flex;
-		gap: 2rem;
-	}
-
-	.nav-link {
-		color: #64748b;
-		text-decoration: none;
-		font-weight: 500;
-		transition: color 0.2s;
-	}
-
-	.nav-link:hover {
-		color: #3b82f6;
-	}
-
-	.nav-auth {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.user-menu {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.username {
-		color: #374151;
-		font-weight: 500;
-	}
-
-	.auth-button {
-		background: #3b82f6;
-		color: white;
-		padding: 0.5rem 1rem;
-		border-radius: 0.5rem;
-		text-decoration: none;
-		font-weight: 500;
-		transition: background-color 0.2s;
-	}
-
-	.auth-button:hover {
-		background: #2563eb;
-	}
-
-	main {
-		flex: 1;
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 2rem;
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	.footer {
-		background: #1f2937;
-		color: #9ca3af;
-		padding: 2rem;
-		margin-top: auto;
-	}
-
-	.footer-content {
-		max-width: 1200px;
-		margin: 0 auto;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.footer-links {
-		display: flex;
-		gap: 2rem;
-	}
-
-	.footer-links a {
-		color: #9ca3af;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-
-	.footer-links a:hover {
-		color: #f3f4f6;
-	}
-
-	@media (max-width: 768px) {
-		.nav {
-			flex-direction: column;
-			gap: 1rem;
-			padding: 1rem;
-		}
-
-		.nav-links {
-			gap: 1rem;
-		}
-
-		.footer-content {
-			flex-direction: column;
-			gap: 1rem;
-			text-align: center;
-		}
-
-		main {
-			padding: 1rem;
-		}
-	}
-</style>

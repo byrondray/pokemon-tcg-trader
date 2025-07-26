@@ -2,7 +2,7 @@
 import TCGdex from '@tcgdex/sdk';
 
 // Initialize TCGdex with English language
-export const tcgdx = new TCGdx('en');
+export const tcgdx = new TCGdex('en');
 
 export interface CardSearchOptions {
     name?: string;
@@ -17,20 +17,20 @@ export async function searchCards(options: CardSearchOptions) {
         const { name, set, types, page = 1, limit = 20 } = options;
 
         // Build search query
-        let cards = await tcgdx.fetchCards();
+        let cards = await tcgdx.fetch('cards', 'set');
 
         if (name) {
-            cards = cards.filter(card =>
+            cards = cards?.filter(card =>
                 card.name.toLowerCase().includes(name.toLowerCase())
             );
         }
 
         if (set) {
-            cards = cards.filter(card => card.set?.id === set);
+            cards = cards?.filter(card => card?.set?.id === set);
         }
 
         if (types && types.length > 0) {
-            cards = cards.filter(card =>
+            cards = cards?.filter(card =>
                 card.types?.some(type => types.includes(type))
             );
         }

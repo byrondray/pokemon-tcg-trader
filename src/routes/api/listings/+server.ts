@@ -1,6 +1,6 @@
 // src/routes/api/listings/+server.ts
 import { json } from '@sveltejs/kit';
-import { getUser } from '@kinde-oss/kinde-auth-sveltekit/server';
+import { kindeAuthClient, type SessionManager } from '@kinde-oss/kinde-auth-sveltekit';
 import { db } from '$lib/server/db';
 import { listings, listingWants, listingOffers } from '$lib/server/db/schema';
 import { eq, desc } from 'drizzle-orm';
@@ -61,9 +61,16 @@ export const GET: RequestHandler = async ({ url, request }) => {
     }
 };
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, cookies }) => {
     try {
-        const user = await getUser(request);
+        const sessionManager: SessionManager = {
+            getSessionItem: (key: string) => Promise.resolve(cookies.get(key)),
+            setSessionItem: <T>(key: string, value: T) => Promise.resolve(cookies.set(key, JSON.stringify(value), { path: '/' })),
+            removeSessionItem: (key: string) => Promise.resolve(cookies.delete(key, { path: '/' })),
+            destroySession: () => Promise.resolve(cookies.getAll().forEach(cookie => cookies.delete(cookie.name, { path: '/' })))
+        };
+
+        const user = await kindeAuthClient.getUser(sessionManager);
         if (!user) {
             return json({
                 success: false,
