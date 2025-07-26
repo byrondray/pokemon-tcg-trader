@@ -1,6 +1,6 @@
 // src/routes/api/cards/search/+server.ts
 import { json } from '@sveltejs/kit';
-import { searchCards } from '$lib/server/tcgdex';
+import { searchCards } from '$lib/server/tcgdx';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url }) => {
@@ -8,8 +8,8 @@ export const GET: RequestHandler = async ({ url }) => {
         const name = url.searchParams.get('name') || undefined;
         const set = url.searchParams.get('set') || undefined;
         const types = url.searchParams.get('types')?.split(',') || undefined;
-        const page = parseInt(url.searchParams.get('page') || '1');
-        const limit = parseInt(url.searchParams.get('limit') || '20');
+        const page = parseInt(url.searchParams.get('page') || '1', 10);
+        const limit = parseInt(url.searchParams.get('limit') || '20', 10);
 
         const result = await searchCards({
             name,
@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({ url }) => {
             data: result
         });
     } catch (error) {
-        console.error('Error in cards search API:', error);
+        console.error('Error in card search API:', error);
         return json({
             success: false,
             error: {

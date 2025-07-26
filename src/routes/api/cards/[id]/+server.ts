@@ -1,7 +1,8 @@
 // src/routes/api/cards/[id]/+server.ts
 import { json } from '@sveltejs/kit';
-import { getCardById } from '$lib/server/tcgdex';
+import { getCardById } from '$lib/server/tcgdx';
 import type { RequestHandler } from './$types';
+
 
 export const GET: RequestHandler = async ({ params }) => {
     try {
