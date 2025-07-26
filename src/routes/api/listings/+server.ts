@@ -95,17 +95,21 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
             }, { status: 400 });
         }
 
-        // Create listing
+        // Create listing - only include required fields that match schema
+        const now = new Date();
+        const listingData = {
+            userId: user.id,
+            createdAt: now
+        } as any;
+        
+        if (title) listingData.title = title;
+        if (description) listingData.description = description;
+        if (expiresAt) listingData.expiresAt = new Date(expiresAt);
+        if (now) listingData.updatedAt = now;
+
         const newListing = await db
             .insert(listings)
-            .values({
-                userId: user.id,
-                title,
-                description,
-                createdAt: new Date(),
-                expiresAt: expiresAt ? new Date(expiresAt) : null,
-                updatedAt: new Date()
-            })
+            .values(listingData)
             .returning();
 
         const listingId = newListing[0].id;

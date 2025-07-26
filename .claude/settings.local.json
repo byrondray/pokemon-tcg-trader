@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(taskkill:*)",
+      "Bash(ls:*)",
+      "Bash(npx svelte-check)",
+      "Bash(npx:*)",
+      "Bash(bun add:*)",
+      "Bash(timeout 10 bun:*)"
+    ],
+    "deny": []
+  }
+}

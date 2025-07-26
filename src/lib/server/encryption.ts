@@ -1,5 +1,5 @@
 // src/lib/server/encryption.ts
-import CryptoJS from 'crypto-js';
+import * as CryptoJS from 'crypto-js';
 import { ENCRYPTION_KEY } from '$env/static/private';
 
 export function encryptTCGPocketId(id: string): string {
