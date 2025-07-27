@@ -117,6 +117,55 @@ Always return consistent responses:
 3. Wonder Pick sharing third
 4. Reputation system fourth
 
+## Animation System Guidelines
+
+Use the established animation components and utilities consistently throughout the app:
+
+### Animation Components
+
+1. **AnimatedCard** - For all card-based content with hover effects
+
+   ```svelte
+   <AnimatedCard delay={index * 100} hoverable={true}>
+     <CardContent><!-- content --></CardContent>
+   </AnimatedCard>
+   ```
+
+2. **PageTransition** - Wrap entire page content for smooth transitions
+
+   ```svelte
+   <PageTransition>
+     <!-- page content -->
+   </PageTransition>
+   ```
+
+3. **LoadingSpinner** - Use for all loading states with Pokemon theming
+   ```svelte
+   <LoadingSpinner size="md" text="Loading cards..." />
+   ```
+
+### Animation Patterns
+
+- **Staggered Animations**: Use progressive delays (50-100ms intervals) for lists and grids
+- **Hover Effects**: Apply `.card-hover` class or `hoverable={true}` prop for interactive elements
+- **Page Transitions**: Always wrap pages with `PageTransition` component
+- **Loading States**: Use `LoadingSpinner` instead of basic "Loading..." text
+- **Micro-interactions**: Apply `btn-primary` class for enhanced button animations
+
+### Animation Utilities (app.css)
+
+- `.card-hover` - Smooth lift effect on hover
+- `.stagger-item` - For grid items that need sequential animation
+- `.btn-primary` - Enhanced button hover states
+- Custom keyframes: `slide-up`, `fade-in`, `scale-in`
+
+### Animation Guidelines
+
+- **Performance**: Always use `quintOut` easing for natural feel
+- **Timing**: Keep animations under 600ms for page elements, 300ms for interactions
+- **Accessibility**: Respect `prefers-reduced-motion` (handled by Svelte transitions)
+- **Consistency**: Use established delay patterns (100ms for cards, 50ms for small items)
+
 ## Common Pitfalls to Avoid
 
 - Don't store card images in database
@@ -130,6 +179,9 @@ Always return consistent responses:
 - **Don't skip the API layer** - Always use `+server.ts` for database operations
 - **Don't use `any` types** - Define proper TypeScript interfaces for API responses
 - **Don't forget `export const prerender = false`** for authenticated routes
+- **Don't create custom animations** - Use the established animation system
+- **Don't skip PageTransition wrapper** - Every page should have smooth transitions
+- **Don't use basic loading text** - Always use LoadingSpinner component
 
 When asked to implement features, always consider:
 
@@ -142,6 +194,8 @@ When asked to implement features, always consider:
 - **Server-side rendering compatibility**
 - **Error handling in load functions**
 - **Parallel data fetching with Promise.all() when possible**
+- **Consistent animation implementation** using established components
+- **Smooth user experience** with appropriate loading states and transitions
 
 ## File Structure Patterns
 
