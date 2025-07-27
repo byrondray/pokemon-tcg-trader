@@ -1,7 +1,7 @@
 // src/lib/server/db/schemas/conversations.ts
 import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
-import { users } from './users.js';
-import { listings } from './listings.js';
+import { users } from './users';
+import { listings } from './listings';
 
 export const conversations = sqliteTable('conversations', {
     id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),

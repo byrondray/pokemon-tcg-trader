@@ -40,7 +40,7 @@
     "@types/crypto-js": "^4.2.2",
     "cloudinary": "^2.7.0",
     "crypto-js": "^4.2.0",
-    "drizzle-orm": "^0.35.0",
+    "drizzle-orm": "^0.44.3",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1"
   }

@@ -1,38 +1,13 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import ListingCard from '$lib/components/ListingCard.svelte';
 	import { Button, Card, CardContent } from '$lib/components/ui';
 	import { isAuthenticated } from '$lib/stores/user';
+	import type { PageData } from './$types';
 
-	let recentListings: any[] = [];
-	let recentWonderPicks: any[] = [];
-	let isLoading = true;
+	export let data: PageData;
 
-	onMount(async () => {
-		try {
-			// Fetch recent listings
-			const listingsResponse = await fetch('/api/listings?limit=6');
-			if (listingsResponse.ok) {
-				const listingsData = await listingsResponse.json();
-				if (listingsData.success) {
-					recentListings = listingsData.data.listings;
-				}
-			}
-
-			// Fetch recent Wonder Picks
-			const wonderPicksResponse = await fetch('/api/wonder-picks?limit=4');
-			if (wonderPicksResponse.ok) {
-				const wonderPicksData = await wonderPicksResponse.json();
-				if (wonderPicksData.success) {
-					recentWonderPicks = wonderPicksData.data.wonderPicks || [];
-				}
-			}
-		} catch (error) {
-			console.error('Error loading home page data:', error);
-		} finally {
-			isLoading = false;
-		}
-	});
+	// Destructure the data from the load function
+	$: ({ recentListings, recentWonderPicks } = data);
 </script>
 
 <svelte:head>
@@ -107,54 +82,47 @@
 	</div>
 </section>
 
-{#if isLoading}
-	<section class="text-center py-12">
-		<div class="w-10 h-10 border-4 border-gray-300 border-l-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-		<p>Loading recent activity...</p>
+{#if recentListings.length > 0}
+	<section class="mb-12">
+		<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+			<h2 class="text-3xl font-bold">Recent Trade Listings</h2>
+			<Button href="/listings" variant="link" class="p-0 h-auto text-primary hover:text-primary/80">
+				View All →
+			</Button>
+		</div>
+		
+		<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+			{#each recentListings as listing}
+				<ListingCard {listing} />
+			{/each}
+		</div>
 	</section>
-{:else}
-	{#if recentListings.length > 0}
-		<section class="mb-12">
-			<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-				<h2 class="text-3xl font-bold">Recent Trade Listings</h2>
-				<Button href="/listings" variant="link" class="p-0 h-auto text-primary hover:text-primary/80">
-					View All →
-				</Button>
-			</div>
-			
-			<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-				{#each recentListings as listing}
-					<ListingCard {listing} />
-				{/each}
-			</div>
-		</section>
-	{/if}
+{/if}
 
-		{#if recentWonderPicks.length > 0}
-		<section class="mb-12">
-			<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-				<h2 class="text-3xl font-bold">Recent Wonder Picks</h2>
-				<Button href="/wonder-picks" variant="link" class="p-0 h-auto text-primary hover:text-primary/80">
-					View All →
-				</Button>
-			</div>
-			
-			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-				{#each recentWonderPicks as wonderPick}
-					<Card class="overflow-hidden hover:scale-105 transition-transform">
-						{#if wonderPick.imageUrl}
-							<img src={wonderPick.imageUrl} alt="Wonder Pick" class="w-full h-48 object-cover" />
-						{/if}
-						<CardContent class="p-4">
-							<p class="text-muted-foreground text-sm">
-								{new Date(wonderPick.createdAt).toLocaleDateString()}
-							</p>
-						</CardContent>
-					</Card>
-				{/each}
-			</div>
-		</section>
-	{/if}
+{#if recentWonderPicks.length > 0}
+	<section class="mb-12">
+		<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+			<h2 class="text-3xl font-bold">Recent Wonder Picks</h2>
+			<Button href="/wonder-picks" variant="link" class="p-0 h-auto text-primary hover:text-primary/80">
+				View All →
+			</Button>
+		</div>
+		
+		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+			{#each recentWonderPicks as wonderPick}
+				<Card class="overflow-hidden hover:scale-105 transition-transform">
+					{#if wonderPick.imageUrl}
+						<img src={wonderPick.imageUrl} alt="Wonder Pick" class="w-full h-48 object-cover" />
+					{/if}
+					<CardContent class="p-4">
+						<p class="text-muted-foreground text-sm">
+							{new Date(wonderPick.createdAt).toLocaleDateString()}
+						</p>
+					</CardContent>
+				</Card>
+			{/each}
+		</div>
+	</section>
 {/if}
 
 <!-- Mobile responsive adjustments handled by Tailwind responsive classes -->

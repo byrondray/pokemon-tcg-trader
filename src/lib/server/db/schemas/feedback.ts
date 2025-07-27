@@ -1,7 +1,7 @@
 // src/lib/server/db/schemas/feedback.ts
 import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
-import { users } from './users.js';
-import { tradeAgreements } from './trades.js';
+import { users } from './users';
+import { tradeAgreements } from './trades';
 
 export const feedback = sqliteTable('feedback', {
     id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),

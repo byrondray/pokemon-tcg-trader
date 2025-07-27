@@ -1,11 +1,11 @@
 // src/lib/server/db/schemas/index.ts
 // Export all tables
-export * from './users.js';
-export * from './listings.js';
-export * from './conversations.js';
-export * from './trades.js';
-export * from './wonder-picks.js';
-export * from './feedback.js';
+export * from './users';
+export * from './listings';
+export * from './conversations';
+export * from './trades';
+export * from './wonder-picks';
+export * from './feedback';
 
 // Export all relations
-export * from './relations.js';
+export * from './relations';

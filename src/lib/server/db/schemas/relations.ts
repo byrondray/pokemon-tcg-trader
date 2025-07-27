@@ -1,11 +1,11 @@
 // src/lib/server/db/schemas/relations.ts
 import { relations } from 'drizzle-orm';
-import { users } from './users.js';
-import { listings, listingWants, listingOffers } from './listings.js';
-import { conversations, messages } from './conversations.js';
-import { tradeAgreements } from './trades.js';
-import { wonderPicks } from './wonder-picks.js';
-import { feedback } from './feedback.js';
+import { users } from './users';
+import { listings, listingWants, listingOffers } from './listings';
+import { conversations, messages } from './conversations';
+import { tradeAgreements } from './trades';
+import { wonderPicks } from './wonder-picks';
+import { feedback } from './feedback';
 
 export const usersRelations = relations(users, ({ many }) => ({
     listings: many(listings),

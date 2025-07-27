@@ -1,7 +1,7 @@
 // src/lib/server/db/schemas/trades.ts
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { users } from './users.js';
-import { conversations } from './conversations.js';
+import { users } from './users';
+import { conversations } from './conversations';
 
 export const tradeAgreements = sqliteTable('trade_agreements', {
     id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),

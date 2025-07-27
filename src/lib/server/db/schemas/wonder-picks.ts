@@ -1,6 +1,6 @@
 // src/lib/server/db/schemas/wonder-picks.ts
 import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
-import { users } from './users.js';
+import { users } from './users';
 
 export const wonderPicks = sqliteTable('wonder_picks', {
     id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),

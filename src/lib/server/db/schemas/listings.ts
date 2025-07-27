@@ -1,6 +1,6 @@
 // src/lib/server/db/schemas/listings.ts
 import { sqliteTable, text, integer, index, primaryKey } from 'drizzle-orm/sqlite-core';
-import { users } from './users.js';
+import { users } from './users';
 
 export const listings = sqliteTable('listings', {
     id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),

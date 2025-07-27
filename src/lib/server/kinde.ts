@@ -8,6 +8,7 @@ import {
     KINDE_LOGOUT_REDIRECT_URI
 } from '$env/static/private';
 
+
 export const kindeAuthClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
     authDomain: KINDE_DOMAIN,
     clientId: KINDE_CLIENT_ID,
